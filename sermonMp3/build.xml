@@ -18,6 +18,10 @@
 		</fileset>
     	<pathconvert property="raw.input.file" refid="wav.in.fs"></pathconvert>
     	<echo>${raw.input.file}</echo>
+		<available file="${raw.input.file}" property="wav.available"></available>
+		<fail unless="wav.available">
+			Kein WAV in Ordner ${recording.directory} gefunden.
+		</fail>
 		
     	<tstamp>
     	    <format property="date.now" pattern="yyyy-MM-dd" locale="de,CH"/>
