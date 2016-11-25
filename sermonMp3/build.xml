@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     25.11.2016 19:36:17                                                        
+
+     sermon uploader
+                                                                                  
+     ====================================================================== -->
+<project name="project" default="default">
+    <target name="default" depends="init, encodeMp3, sermonUpload" >
+        
+    </target>
+
+	<property file="ant.properties"/>
+	
+	<target name="init">
+		<fileset dir="${recording.directory}" id="wav.in.fs">
+			<include name="*.wav"/>
+		</fileset>
+    	<pathconvert property="raw.input.file" refid="wav.in.fs"></pathconvert>
+    	<echo>${raw.input.file}</echo>
+		
+    	<tstamp>
+    	    <format property="date.now" pattern="yyyy-MM-dd" locale="de,CH"/>
+    	  </tstamp>
+    	<input message="Bitte Titel (ohne Datum) der Predigt eingeben. \nMoeglichst ohne Leerschlaege, Umlaute oder Sonderzeichen." addproperty="sermon.title"/>
+    	<property name="mp3.output.file" value="${recording.directory}/${date.now}_${sermon.title}.mp3"/>
+	</target>
+	
+    <target name="encodeMp3">
+		<echo>Encoding mp3 ${mp3.output.file}"/></echo>
+    	<exec executable="lame/lame.exe">
+    		<arg value="-V ${mp3.vbr.quality}"/>
+    		<arg value="${raw.input.file}"/>
+    		<arg value="${mp3.output.file}"/>
+    	</exec>
+    </target>
+	
+	<target name="sermonUpload">
+		<echo>Uploading ${mp3.output.file} to ${ftp.host}</echo>
+		<ftp action="send" verbose="true"
+			server="${ftp.host}" userid="${ftp.user}" password="${ftp.pass}">
+			<fileset>
+				<includesfile unless="${mp3.output.file}"/>
+			</fileset>
+		</ftp>
+	</target>
+
+</project>
