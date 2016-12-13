@@ -41,12 +41,21 @@
 	
 	<target name="sermonUpload">
 		<echo>Uploading ${mp3.output.file} to ${ftp.host}</echo>
+		<antcall target="sftpUpload" />
+	</target>
+	
+	<target name="sftpUpload">
+		<scp todir="${ftp.user}:${ftp.pass}@${ftp.host}:/" 
+					sftp="true" trust="true" verbose="true" 
+					file="${mp3.output.file}"   />
+	</target>
+
+	<target name="ftpUpload">
 		<ftp action="send" verbose="true"
-			server="${ftp.host}" userid="${ftp.user}" password="${ftp.pass}">
+			server="${ftp.host}" port="22" userid="${ftp.user}" password="${ftp.pass}">
 			<fileset>
 				<includesfile unless="${mp3.output.file}"/>
 			</fileset>
 		</ftp>
 	</target>
-
 </project>
