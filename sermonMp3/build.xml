@@ -46,15 +46,15 @@
 	
 	<target name="sftpUpload">
 		<scp todir="${ftp.user}:${ftp.pass}@${ftp.host}:/" 
-					sftp="true" trust="true" verbose="true" 
-					file="${mp3.output.file}"   />
+			sftp="true" trust="true" verbose="true" 
+			file="${mp3.output.file}"   />
 	</target>
 
 	<target name="ftpUpload">
 		<ftp action="send" verbose="true"
-			server="${ftp.host}" port="22" userid="${ftp.user}" password="${ftp.pass}">
+			server="${ftp.host}" userid="${ftp.user}" password="${ftp.pass}">
 			<fileset>
-				<includesfile unless="${mp3.output.file}"/>
+				<includesfile name="${mp3.output.file}"/>
 			</fileset>
 		</ftp>
 	</target>
