@@ -41,11 +41,21 @@
 	
 	<target name="sermonUpload">
 		<echo>Uploading ${mp3.output.file} to ${ftp.host}</echo>
-		<antcall target="sftpUpload" />
+		<antcall target="filezillaUpload" />
+	</target>
+	
+	<target name="filezillaUpload">
+		<property name="fzPath"
+		            location="${filezilla.path}/filezilla"/>
+		  <exec executable="${fzPath}">
+		  	<!-- [protocol://][us//er[:pass]@]host[:port][/path] -->
+		  	<arg value="${ftp.user}:${ftp.pass}@${ftp.host}:${ftp.port}"/>
+		  	<arg value="--local=${recording.directory}"/>
+		</exec>
 	</target>
 	
 	<target name="sftpUpload">
-		<scp todir="${ftp.user}:${ftp.pass}@${ftp.host}:/" 
+		<scp todir="${ftp.user}:${ftp.pass}@${ftp.host}:${ftp.port}" 
 			sftp="true" trust="true" verbose="true" 
 			file="${mp3.output.file}"   />
 	</target>
