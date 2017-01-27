@@ -55,9 +55,10 @@
 	</target>
 	
 	<target name="sftpUpload">
-		<scp todir="${ftp.user}:${ftp.pass}@${ftp.host}:${ftp.port}" 
+		<scp todir="${ftp.user}:${ftp.pass}@${ftp.host}:/" 
+			port="${ftp.port}"
 			sftp="true" trust="true" verbose="true" 
-			file="${mp3.output.file}"   />
+			file="${mp3.output.file}"/> 
 	</target>
 
 	<target name="ftpUpload">
