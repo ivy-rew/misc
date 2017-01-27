@@ -6,7 +6,7 @@
                                                                                   
      ====================================================================== -->
 <project name="project" default="default">
-    <target name="default" depends="init, encodeMp3, sermonUpload" >
+    <target name="default" depends="init, encodeMp3Lib, sermonUpload" >
         
     </target>
 
@@ -30,7 +30,27 @@
     	<property name="mp3.output.file" value="${recording.directory}/${date.now}_${sermon.title}.mp3"/>
 	</target>
 	
-    <target name="encodeMp3">
+	<target name="encodeMp3Lib">
+		<echo>Encoding mp3 ${mp3.output.file}"/></echo>
+		<java classname="net.sourceforge.lame.mp3.Main">
+			<arg value="-V"/>
+			<arg value="${mp3.vbr.quality}"/>
+			<arg value="--vbr-old"/>
+			<arg value="--resample"/>
+			<arg value="44"/><!-- 44'100 KameHZ -->
+    		<arg value="${raw.input.file}"/>
+    		<arg value="${mp3.output.file}"/>
+		</java>
+    </target>
+	
+	<target name="encodeLibHelp">
+		<java classname="net.sourceforge.lame.mp3.Main">
+			<arg value="--longhelp"/>
+		</java>
+	</target>
+	
+    <target name="encodeMp3Binary" 
+    	description="windows only!">
 		<echo>Encoding mp3 ${mp3.output.file}"/></echo>
     	<exec executable="lame/lame.exe">
     		<arg value="-V ${mp3.vbr.quality}"/>
