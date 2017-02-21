@@ -57,11 +57,18 @@
 		<fail message="Sermon upload aborted by user"/>
 	</target>
 	
+	<target name="convertUiInput">
+		<condition property="wav.normalize.enabled">
+			<istrue value="${wav.normalize}"/>
+		</condition>
+		<echo>normalized=${wav.normalize.enabled}</echo>
+	</target>
+	
 	<target name="inputConsole">
     	<input message="Bitte Titel (ohne Datum) der Predigt eingeben. \nMoeglichst ohne Leerschlaege, Umlaute oder Sonderzeichen." addproperty="sermon.title"/>
 	</target>
 	
-	<target name="normalize" if="wav.normalize">
+	<target name="normalize" if="wav.normalize.enabled" depends="convertUiInput">
 		<exec executable="lib/normalize.exe">
 			<arg value="${raw.input.file}"/>
 		</exec>
