@@ -34,7 +34,7 @@
 	
 	<target name="inputForm">
 		<antform title="Sermon Uploader"  >
-			<textproperty label="Titel der Predigt (ohne Datum)" property="sermon.title"
+			<textproperty label="Sermon title (without date)" property="sermon.title"
 				tooltip="Without special characters like umlauts or white spaces"
 				focus="true"/>
 			<fileselectionproperty 
@@ -48,13 +48,21 @@
 				values="9,8,7,6,5,4,3,2,1,0"/>
 			<controlbar>
 				<button type="cancel" label="Cancel" target="abort"/>
-				<button type="ok" label="OK"/>
+				<button target="fork" label="ForkMe" />
+				<button type="ok" label="Start"/>
 			</controlbar>
 		</antform>
 	</target>
 	
 	<target name="abort">
 		<fail message="Sermon upload aborted by user"/>
+	</target>
+	
+	<target name="fork">
+		<exec executable="firefox">
+			<arg value="https://github.com/ivy-rew/misc/tree/master/sermonMp3"/>
+		</exec>
+		<fail message="github opened by user"/>
 	</target>
 	
 	<target name="convertUiInput">
